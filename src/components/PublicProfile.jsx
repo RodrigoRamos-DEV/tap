@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getProfileBySlug } from './services/authService';
-import CardPreview from './CardPreview';
+import { getProfileBySlug } from '../services/authService';
+import CardPreview from '../Pages/CardPreview';
 
 const PublicProfile = () => {
   const { slug } = useParams();

@@ -1,16 +1,45 @@
-require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const pool = require('./config/db');
 
 const app = express();
-const PORT = process.env.SERVER_PORT || 5000;
-
+app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send('API Digital Cards está rodando!');
+// Rota de login
+app.post('/api/auth/login', async (req, res) => {
+  const { email, password } = req.body;
+  
+  try {
+    // 1. Buscar usuário no banco
+    const user = await pool.query(
+      'SELECT * FROM users WHERE email = $1', 
+      [email]
+    );
+
+    // 2. Verificar se existe
+    if (user.rows.length === 0) {
+      return res.status(401).json({ error: 'Credenciais inválidas' });
+    }
+
+    // 3. Verificar senha (exemplo com bcrypt)
+    const validPassword = await bcrypt.compare(password, user.rows[0].password_hash);
+    if (!validPassword) {
+      return res.status(401).json({ error: 'Credenciais inválidas' });
+    }
+
+    // 4. Retornar token/sucesso
+    res.json({ 
+      success: true,
+      user: {
+        id: user.rows[0].id,
+        email: user.rows[0].email
+      }
+    });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+app.listen(5000, () => console.log('Servidor rodando na porta 5000'));

@@ -1,15 +1,28 @@
-const pool = require('./config/db');
+const { Pool } = require('pg');
+require('dotenv').config();
 
-async function testDB() {
+const pool = new Pool({
+  user: process.env.DB_USER || 'postgres', // Fallback para usuário padrão
+  host: process.env.DB_HOST || 'localhost',
+  database: process.env.DB_NAME || 'digital_cards',
+  password: process.env.DB_PASSWORD || '123', // Substitua pela senha real
+  port: process.env.DB_PORT || 5432,
+});
+
+async function testTables() {
   try {
-    const res = await pool.query('SELECT * FROM users');
-    console.log('✅ Teste de consulta bem-sucedido!');
-    console.log('Resultado:', res.rows);
+    // Testar consulta nas tabelas
+    const users = await pool.query('SELECT COUNT(*) FROM users');
+    const profiles = await pool.query('SELECT COUNT(*) FROM profiles');
+    
+    console.log('✅ Conexão OK!');
+    console.log(`👤 Users: ${users.rows[0].count} registros`);
+    console.log(`📇 Profiles: ${profiles.rows[0].count} registros`);
   } catch (err) {
-    console.error('❌ Erro no teste:', err);
+    console.error('❌ Erro:', err.message);
   } finally {
     await pool.end();
   }
 }
 
-testDB();
+testTables();

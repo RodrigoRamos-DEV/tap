@@ -1,4 +1,3 @@
-// backend/config/db.js
 const { Pool } = require('pg');
 require('dotenv').config();
 
@@ -8,16 +7,14 @@ const pool = new Pool({
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
-  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false
+  ssl: process.env.DB_SSL === 'true',
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000,
 });
 
-// Teste de conexão automático ao iniciar
-pool.query('SELECT NOW()', (err) => {
-  if (err) {
-    console.error('❌ Erro ao conectar ao PostgreSQL:', err);
-  } else {
-    console.log('✅ Conectado ao PostgreSQL com sucesso!');
-  }
-});
+// Teste automático ao iniciar
+pool.query('SELECT NOW()')
+  .then(() => console.log('✅ PostgreSQL conectado'))
+  .catch(err => console.error('❌ Erro PostgreSQL:', err.stack));
 
 module.exports = pool;
