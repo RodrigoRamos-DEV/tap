@@ -1,0 +1,278 @@
+/* Reset e configurações base */
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Container principal do formulário */
+.form-container {
+  width: 90%;
+  max-width: 1200px;
+  min-height: 700px; /* Altura mínima base */
+  height: auto;
+  margin: 20px auto;
+  padding: 20px;
+  background: rgba(12, 1, 1, 0.322);
+  border-radius: 10px;
+  box-sizing: border-box;
+  overflow-y: auto; /* Permite scroll se necessário */
+  
+}
+
+/* Container dos botões de navegação */
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  padding: 15px 0;
+}
+
+/* Estilo dos botões glow */
+.glow-on-hover {
+  width: 100%;
+  max-width: 170px;
+  height: 50px;
+  border: none;
+  outline: none;
+  color: #fff;
+  background: #111;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.glow-on-hover:before {
+  content: '';
+  background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing 20s linear infinite;
+  opacity: 0;
+  transition: opacity .3s ease-in-out;
+  border-radius: 10px;
+}
+
+.glow-on-hover:hover:before {
+  opacity: 1;
+}
+
+.glow-on-hover:after {
+  z-index: -1;
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #111;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+}
+
+@keyframes glowing {
+  0% { background-position: 0 0; }
+  50% { background-position: 400% 0; }
+  100% { background-position: 0 0; }
+}
+
+/* Estilos para labels */
+.label-white {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  font-size: 1rem;
+  color: white;
+}
+
+/* Campos de formulário */
+.form-group {
+  margin-bottom: 15px;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  font-size: 1rem;
+  color: #333;
+  box-sizing: border-box;
+}
+
+input:focus, textarea:focus {
+  border-color: #007bff;
+  background-color: #e6f9ff;
+  outline: none;
+}
+
+/* Alertas */
+.alert-danger {
+  color: #fff;
+  background-color: #dc3545;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* Botão de salvar */
+.btn-primary {
+  display: block;
+  width: 100%;
+  max-width: 200px;
+  margin: 20px auto 0;
+  padding: 12px;
+  background: linear-gradient(45deg, #4caf50, #81c784);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Upload de arquivos */
+.custom-file-upload {
+  display: inline-block;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: center;
+  transition: all 0.3s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.not-uploaded {
+  background-color: #777;
+  color: white;
+}
+
+.uploaded {
+  background-color: #28a745;
+  color: white;
+}
+
+.custom-file-input {
+  display: none;
+}
+
+/* Layout das redes sociais */
+.social-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+.social-column {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Carrossel de imagens */
+.carousel-inner {
+  width: 100%;
+  max-height: 300px;
+  overflow: hidden;
+  border-radius: 5px;
+}
+
+/* Media Queries para responsividade */
+@media (min-width: 576px) {
+  .form-container {
+      padding: 20px;
+  }
+  
+  .glow-on-hover {
+      font-size: 15px;
+  }
+  
+  .social-container {
+      grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 768px) {
+  .form-container {
+      width: 80%;
+      padding: 25px;
+  }
+  
+  .button-container {
+      gap: 20px;
+  }
+  
+  .btn-primary {
+      padding: 12px 30px;
+  }
+}
+
+@media (min-width: 992px) {
+  .form-container {
+      width: 70%;
+  }
+  
+  .social-container {
+      gap: 25px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .form-container {
+      width: 60%;
+  }
+  
+  .glow-on-hover {
+      font-size: 16px;
+  }
+}
+
+/* Ajustes para telas muito pequenas (menos de 400px) */
+@media (max-width: 400px) {
+  .button-container {
+      flex-direction: column;
+      align-items: center;
+  }
+  
+  .glow-on-hover {
+      max-width: 100%;
+  }
+  
+  .btn-primary {
+      max-width: 100%;
+  }
+  
+  .custom-file-upload {
+      padding: 8px 12px;
+      font-size: 13px;
+  }
+}
+
+/* Ajustes para orientação paisagem em dispositivos móveis */
+@media (max-height: 500px) and (orientation: landscape) {
+  .form-container {
+      height: auto;
+      max-height: 90vh;
+      overflow-y: auto;
+  }
+}

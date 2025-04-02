@@ -1,0 +1,36 @@
+.App {
+  height: 100%; /* Garante que o contêiner principal ocupe 100% da altura do body */
+  display: flex;
+  flex-direction: column; /* Se você tiver outros elementos, isso ajuda a organizá-los */
+}
+
+form {
+  margin: 20px;
+  text-align: center;
+}
+
+input {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  width: 300px;
+}
+
+.card-preview {
+  margin-top: 20px;
+}
+
+.card {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin: 10px auto;
+  width: 300px;
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+
+.label-white {
+  color: #ffffff; /* Cor branca */
+}
