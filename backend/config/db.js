@@ -1,20 +1,41 @@
+// backend/config/db.js
 const { Pool } = require('pg');
 require('dotenv').config();
 
+// Configuração robusta com tratamento de erros
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
+  user: process.env.DB_USER || 'postgres', // Fallback padrão
+  host: process.env.DB_HOST || 'localhost',
+  database: process.env.DB_NAME || 'digital_cards',
+  password: String(process.env.DB_PASSWORD), // Garante que a senha seja string
+  port: Number(process.env.DB_PORT) || 5432,
   ssl: process.env.DB_SSL === 'true',
   idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
+  connectionTimeoutMillis: 5000,
+  // Configurações específicas para SCRAM-SHA-256
+  application_name: 'tapconecte-backend',
+  options: '-c search_path=public',
 });
 
-// Teste automático ao iniciar
-pool.query('SELECT NOW()')
-  .then(() => console.log('✅ PostgreSQL conectado'))
-  .catch(err => console.error('❌ Erro PostgreSQL:', err.stack));
+// Teste de conexão automático
+(async () => {
+  try {
+    const client = await pool.connect();
+    console.log('✅ PostgreSQL conectado com sucesso!');
+    client.release();
+  } catch (err) {
+    console.error('❌ ERRO DE CONEXÃO:', {
+      message: err.message,
+      code: err.code,
+      stack: err.stack
+    });
+    process.exit(1); // Encerra o processo se não conectar
+  }
+})();
 
-module.exports = pool;
+// Exportação correta do pool
+module.exports = {
+  query: (text, params) => pool.query(text, params), // Interface consistente
+  getClient: () => pool.connect(), // Para transações
+  end: () => pool.end()
+};

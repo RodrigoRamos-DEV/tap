@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const pool = require('./config/db');
+const bcrypt = require('bcrypt');
 
 const app = express();
 app.use(cors());
@@ -32,13 +33,21 @@ app.post('/api/auth/login', async (req, res) => {
     res.json({ 
       success: true,
       user: {
-        id: user.rows[0].id,
-        email: user.rows[0].email
+        id: user.rows[5].id,
+        email: user.rows[5].email
       }
     });
 
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+app.get('/api/users', async (req, res) => {
+  try {
+    const users = await pool.query('SELECT id, email FROM users');
+    res.json(users.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
